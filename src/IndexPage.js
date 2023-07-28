@@ -1,12 +1,28 @@
-// src/IndexPage.js
 import React, { useRef } from 'react';
-import './IndexPage.css'; // Import the CSS file for styling
-
+import './IndexPage.css'; 
+import { uploadFile } from './service/apiService';
 const IndexPage = () => {
   const fileInputRef = useRef(null);
 
   const handleChooseFile = () => {
     fileInputRef.current.click();
+  };
+
+  const handleUpload = async () => {
+    try {
+      const fileInput = fileInputRef.current;
+      const file = fileInput && fileInput.files && fileInput.files[0];
+
+      if (file) {
+        // Call the API service function for uploading
+        const response = await uploadFile(file);
+        console.log('API response:', response.data);
+      } else {
+        console.error('No file selected.');
+      }
+    } catch (error) {
+      console.error('Error uploading file:', error);
+    }
   };
 
   return (
@@ -20,7 +36,7 @@ const IndexPage = () => {
           style={{ display: 'none' }}
         />
         <label onClick={handleChooseFile}>Choose File</label>
-        <button>Upload</button>
+        <button onClick={handleUpload}>Upload</button>
       </div>
       <div className="input-section">
         <h2>Make URL Short</h2>
