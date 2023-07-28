@@ -1,5 +1,5 @@
 import React from 'react';
-import IndexPage from './IndexPage'; 
+import IndexPage from './IndexPage';
 
 function App() {
   return (
@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
       </header>
       <main>
-        <IndexPage /> 
+        <IndexPage />
       </main>
       <footer>
       </footer>
