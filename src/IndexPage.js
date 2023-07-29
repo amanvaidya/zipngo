@@ -1,8 +1,12 @@
-import React, { useRef } from 'react';
-import './IndexPage.css'; 
-import { uploadFile } from './service/apiService';
+import React, { useRef, useState } from 'react';
+import './IndexPage.css';
+import { uploadFile, makeUrlShort } from './service/apiService';
+
 const IndexPage = () => {
   const fileInputRef = useRef(null);
+  const [urlToShorten, setUrlToShorten] = useState('');
+  const [alias, setAlias] = useState('');
+  const [shortenedUrl, setShortenedUrl] = useState('');
 
   const handleChooseFile = () => {
     fileInputRef.current.click();
@@ -25,6 +29,20 @@ const IndexPage = () => {
     }
   };
 
+  const handleMakeShort = async () => {
+    try {
+      const requestData = {
+        url: urlToShorten,
+        alias: alias,
+      };
+
+      const response = await makeUrlShort(requestData);
+      setShortenedUrl(response.shortUrl);
+    } catch (error) {
+      console.error('Error making URL short:', error);
+    }
+  };
+
   return (
     <div className="index-page-container">
       <div className="upload-section">
@@ -40,9 +58,21 @@ const IndexPage = () => {
       </div>
       <div className="input-section">
         <h2>Make URL Short</h2>
-        <input type="text" placeholder="Enter any URL..." />
-        <button>Make Short</button>
-        <button class="download">Download QR Code</button>
+        <input
+          type="text"
+          placeholder="Enter any URL..."
+          value={urlToShorten}
+          onChange={(e) => setUrlToShorten(e.target.value)}
+        />
+        <input
+          type="text"
+          placeholder="Enter an alias (optional)..."
+          value={alias}
+          onChange={(e) => setAlias(e.target.value)}
+        />
+        <button onClick={handleMakeShort}>Make Short</button>
+        <button className="download">Download QR Code</button>
+        {shortenedUrl && <p>Shortened URL: {shortenedUrl}</p>}
       </div>
       {/* Add any other content you want to display on the index page */}
     </div>

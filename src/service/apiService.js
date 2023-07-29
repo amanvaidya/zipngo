@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-// Replace 'YOUR_API_ENDPOINT' with the actual URL of your API
 const API_ENDPOINT = 'YOUR_API_ENDPOINT';
 
-// Function to upload a file using Axios as a multipart form data
 const uploadFile = async (file) => {
+  console.log("upload")
   try {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axios.post(`${API_ENDPOINT}/upload`, formData, {
+    const response = await axios.post(`${API_ENDPOINT}/compress`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -20,5 +19,18 @@ const uploadFile = async (file) => {
     throw error;
   }
 };
+
+export const makeUrlShort = async (requestData) => {
+  console.log("makeUrlShort")
+  try {
+    const response = await axios.post(`${API_ENDPOINT}/encode`, requestData);
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
 
 export { uploadFile };
